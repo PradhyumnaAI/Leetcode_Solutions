@@ -1,7 +1,7 @@
 class Solution:
     def minMoves(self, nums: list[int]) -> int:
         nums.sort()
-        minn = min(nums)
+        minn = nums[0]
         n = len(nums)
         summ =0
         
