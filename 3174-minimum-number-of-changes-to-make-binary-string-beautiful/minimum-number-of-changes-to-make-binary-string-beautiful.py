@@ -3,8 +3,8 @@ class Solution:
         string = []
         count = 0
         for i in range (0,len(s),2):
-            string1 = s[i:i+2]
-            string.append(string1)
+            
+            string.append(s[i:i+2])
 
         for i in string :
             if i == "01":
