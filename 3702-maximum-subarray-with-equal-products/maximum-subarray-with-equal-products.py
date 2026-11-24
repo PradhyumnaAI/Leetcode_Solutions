@@ -1,60 +1,66 @@
 class Solution:
     def maxLength(self, nums: List[int]) -> int:
-        def custom_gcd(a: int, b: int) -> int:
-            while b != 0:
-                a, b = b, a % b
-            return a
+        def find_gcd(arr:List[int]) -> int:
+            smallest = min(arr)
+            # idx = 1
+            # while idx< len(arr):
+            #     if arr[idx]<smallest:
+            #         smallest = arr[idx]
+            #     idx+=1
+            
+            candidate = smallest
+            while candidate>=1:
+                divides_all = True
+                for val in arr :
+                    if val%candidate!=0:
+                        divides_all = False
+                        break
+                if divides_all:
+                    return candidate
+                candidate-=1
+            return 1
+        def find_lcm (arr:List[int],upper_bound:int)->int:
+            largest = max(arr)
+            # idx = 1
+            # while idx < len(arr):
+            #     if arr[idx] > largest:
+            #         largest = arr[idx]
+            #     idx += 1
 
-        def lcm_of_two(a: int, b: int) -> int:
-            if a == 0 or b == 0:
-                return 0
-            return abs(a * b) // custom_gcd(a, b)
+            multiple = largest
+            while multiple <= upper_bound:
+                all_divide_it = True
+                for val in arr:
+                    if multiple % val != 0:
+                        all_divide_it = False
+                        break
+                if all_divide_it:
+                    return multiple
+                multiple += largest
+            return upper_bound
 
-        def lcm_of_list(arr: List[int]) -> int:
-            if not arr:
-                return 0
-            result = arr[0]
-            idx = 1
-            while idx < len(arr):
-                result = lcm_of_two(result, arr[idx])
-                idx += 1
-            return result
-
-        def gcd_of_list(numbers: List[int]) -> int:
-            if not numbers:
-                return 0
-            result = numbers[0]
-            idx = 1
-            while idx < len(numbers):
-                result = custom_gcd(result, numbers[idx])
-                if result == 1:
-                    return 1
-                idx += 1
-            return result
-
-        def prod_of_list(arr: List[int]) -> int:
-            prod_val = 1
+        def find_prod(arr:List[int])->int:
+            total = 1
             for val in arr:
-                prod_val = prod_val * val
-            return prod_val
-
-        max_len = 0
+                total = total * val
+            return total 
+            
+        max_len = 0 
         n = len(nums)
+        i = 0 
+        while i<n:
+            j=i 
+            while j<n:
+                sub = nums[i:j+1]
+                prod = find_prod(sub)
+                gcd = find_gcd(sub)
+                lcm = find_lcm(sub,prod)
 
-        i = 0
-        while i < n:
-            j = i
-            while j < n:
-                sub = nums[i : j + 1]
-                lcm_val = lcm_of_list(sub)
-                gcd_val = gcd_of_list(sub)
-                prod_val = prod_of_list(sub)
-
-                if prod_val == lcm_val * gcd_val:
-                    current_len = j - i + 1
-                    if current_len > max_len:
-                        max_len = current_len
-                j += 1
-            i += 1
-
+                if prod == gcd*lcm:
+                    length = j-i+1
+                    if length >max_len:
+                        max_len = length
+                j+=1
+            i+=1
         return max_len
+
